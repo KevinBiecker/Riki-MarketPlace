@@ -1,0 +1,42 @@
+{% extends 'base.html' %}
+
+{% block title %}New Product{% endblock %}
+
+{% block content %}
+
+    <head>
+
+    <title>New Product</title></head>
+<body>
+
+    <label for="title">Enter Title:</label> <input type="text" id="title" name="titles">
+    <label for="description">Enter Description:</label>
+        <textarea id="description" name="description" rows="4"></textarea>
+    <label for="price">Enter Price:</label><input type="text" id="price" name="prices">
+    <br>
+    <button type="submit" onclick='myfunction();'>Post</button>
+
+
+    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.5/jquery.min.js"></script>
+    <script>
+        function myfunction() {
+
+            const title = document.getElementById("title").value;
+            const description = document.getElementById("description").value;
+            const price = document.getElementById("price").value;
+
+            const dict_values = {title, description, price} //Pass the javascript variables to a dictionary.
+            const s = JSON.stringify(dict_values); // Stringify converts a JavaScript object or value to a JSON string
+            console.log(s); // Prints the variables to console window, which are in the JSON format
+            window.alert(s)
+            $.ajax({
+                url:"/product_info",
+                type:"POST",
+                contentType: "application/json",
+                data: JSON.stringify(s)});
+        }
+    </script>
+
+</body>
+
+{% endblock %}
