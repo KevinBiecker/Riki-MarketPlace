@@ -93,6 +93,29 @@ def product_info():
 
     return result
 
+@bp.route('/product_list_info', methods=['POST'])
+def product_list_info():
+    Product.productList.clear()
+    # The following code bellow is for data persistance
+    pickle_infile = open("productData.pkl", "rb")
+    pickle_file = pickle.load(pickle_infile)
+    for data in pickle_file:
+        Product.productList.append(data)
+
+    # empty_list = []
+    # overwrites pickle with productList
+    pickle_outfile = open("productData.pkl", "wb")
+    pickle.dump(Product.productList, pickle_outfile)
+    # pickle.dump(empty_list, pickle_outfile)
+    pickle_outfile.close()
+
+@bp.route('/list/')
+@protect
+def list():
+    product_list_info()
+    list_of_product = Product.productList
+    print(list_of_product)
+    return render_template('product_list.html', list_of_product= list_of_product)
 
 @bp.route('/<path:url>/')
 @protect
