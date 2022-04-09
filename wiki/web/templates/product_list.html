@@ -1,0 +1,47 @@
+{% extends 'base.html' %}
+
+{% block title %}Product List{% endblock %}
+
+{% block content %}
+
+    <head>
+
+    <title>Products</title></head>
+<hr>
+{% for list in list_of_product %}
+    <table class = "table table-hover">
+    <tr>
+    <tr>
+        <th>TITLE:</th>
+        <td>
+           {{ list.title }}
+        </td>
+    </tr>
+        <tr>
+        <th>DESCRIPTION:</th>
+        <td>
+
+            {{ list.description}}
+
+        </td>
+        </tr>
+        <tr>
+         <th>PRICE:</th>
+        <td>
+            {{ list.price }}
+            </td>
+        </tr>
+        <tr>
+        <th>
+
+        </th>
+        <td>
+
+        </td>
+        </tr>
+
+    </tr>
+    </table>
+    {% endfor %}
+
+{% endblock %}
