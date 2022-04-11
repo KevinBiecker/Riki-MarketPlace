@@ -2,6 +2,7 @@
     Routes
     ~~~~~~
 """
+import flask
 from flask import Blueprint
 from flask import flash
 from flask import redirect
@@ -116,6 +117,20 @@ def list():
     list_of_product = Product.productList
     print(list_of_product)
     return render_template('product_list.html', list_of_product= list_of_product)
+
+
+@bp.route('/sort_price_descending', methods=['POST'])
+@protect
+def sort_price_descending():
+    product_list_info()
+    Product.productList.sort(key=lambda x: x.price, reverse=True)
+    print(Product.productList)
+    pickle_outfile = open("productData.pkl", "wb")
+    pickle.dump(Product.productList, pickle_outfile)
+    # pickle.dump(empty_list, pickle_outfile)
+    pickle_outfile.close()
+    #list()
+    return render_template('product_list.html', list_of_product=Product.productList)
 
 @bp.route('/<path:url>/')
 @protect
