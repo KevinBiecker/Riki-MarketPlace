@@ -6,9 +6,13 @@
 
     <head>
 
-    <title>Products</title></head>
+    <title>Products</title>
+    </head>
 <hr>
     <button type="button" value="Sort by Price (Descending)" onclick="sort_by_price_descending()">Sort by Price (Descending)</button>
+    <button type="button" value="Sort by Price (Ascending)" onclick="sort_by_price_ascending()">Sort by Price (Ascending)</button>
+    <button type="button" value="Sort by Title (A to Z)" onclick="sort_by_title_ascending()">Sort by Title (A to Z)</button>
+    <button type="button" value="Sort by TItle (Z to A)" onclick="sort_by_title_descending()">Sort by Title (Z to A)</button>
 {% for list in list_of_product %}
     <table class = "table table-hover">
     <tr>
@@ -54,6 +58,37 @@
                 contentType: "application/json",
                 data: {},
             })
+            window.location.reload()
+        }
+
+        function sort_by_price_ascending() {
+            $.ajax({
+                url:"/sort_price_ascending",
+                type:"POST",
+                contentType: "application/json",
+                data: {},
+            })
+            window.location.reload()
+        }
+
+        function sort_by_title_ascending() {
+            $.ajax({
+                url:"/sort_title_ascending",
+                type:"POST",
+                contentType: "application/json",
+                data: {},
+            })
+            window.location.reload()
+        }
+
+        function sort_by_title_descending() {
+            $.ajax({
+                url:"/sort_title_descending",
+                type:"POST",
+                contentType: "application/json",
+                data: {},
+            })
+            window.location.reload()
         }
     </script>
 

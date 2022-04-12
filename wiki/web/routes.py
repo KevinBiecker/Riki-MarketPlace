@@ -129,8 +129,47 @@ def sort_price_descending():
     pickle.dump(Product.productList, pickle_outfile)
     # pickle.dump(empty_list, pickle_outfile)
     pickle_outfile.close()
-    #list()
     return render_template('product_list.html', list_of_product=Product.productList)
+
+
+@bp.route('/sort_price_ascending', methods=['POST'])
+@protect
+def sort_price_ascending():
+    product_list_info()
+    Product.productList.sort(key=lambda x: x.price)
+    print(Product.productList)
+    pickle_outfile = open("productData.pkl", "wb")
+    pickle.dump(Product.productList, pickle_outfile)
+    # pickle.dump(empty_list, pickle_outfile)
+    pickle_outfile.close()
+    return render_template('product_list.html', list_of_product=Product.productList)
+
+
+@bp.route('/sort_title_ascending', methods=['POST'])
+@protect
+def sort_title_ascending():
+    product_list_info()
+    Product.productList.sort(key=lambda x: x.title)
+    print(Product.productList)
+    pickle_outfile = open("productData.pkl", "wb")
+    pickle.dump(Product.productList, pickle_outfile)
+    # pickle.dump(empty_list, pickle_outfile)
+    pickle_outfile.close()
+    return render_template('product_list.html', list_of_product=Product.productList)
+
+
+@bp.route('/sort_title_descending', methods=['POST'])
+@protect
+def sort_title_descending():
+    product_list_info()
+    Product.productList.sort(key=lambda x: x.title, reverse=True)
+    print(Product.productList)
+    pickle_outfile = open("productData.pkl", "wb")
+    pickle.dump(Product.productList, pickle_outfile)
+    # pickle.dump(empty_list, pickle_outfile)
+    pickle_outfile.close()
+    return render_template('product_list.html', list_of_product=Product.productList)
+
 
 @bp.route('/<path:url>/')
 @protect
