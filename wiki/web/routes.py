@@ -119,6 +119,17 @@ def list():
     return render_template('product_list.html', list_of_product= list_of_product)
 
 
+@bp.route('/list/', methods=['GET', 'POST'])
+def search_products():
+
+    search_input = request.form['search_input']
+    search_input = search_input.upper()
+    product_list_info()
+    all_products = Product.productList
+
+    return render_template('search_results.html', search_input=search_input, all_products=all_products)
+
+
 @bp.route('/sort_price_descending', methods=['POST'])
 @protect
 def sort_price_descending():

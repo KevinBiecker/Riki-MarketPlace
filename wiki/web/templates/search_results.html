@@ -1,0 +1,57 @@
+{% extends 'base.html' %}
+
+{% block title %}Search Results{% endblock %}
+
+{% block content %}
+
+    <head>
+
+    <title>Products</title></head>
+
+    <!-- Search for products based on whether they contain the user input><-->
+    <form method="POST">
+        <input name="search_input" placeholder="Search for products...">
+        <input type="submit">
+    </form>
+
+
+<hr>
+{% for product in all_products %}
+    {% if search_input in product.title.upper() or search_input in product.description.upper() %}
+        <table class = "table table-hover">
+        <tr>
+        <tr>
+            <th>TITLE:</th>
+            <td>
+               {{ product.title }}
+            </td>
+        </tr>
+            <tr>
+            <th>DESCRIPTION:</th>
+            <td>
+
+                {{ product.description}}
+
+            </td>
+            </tr>
+            <tr>
+             <th>PRICE:</th>
+            <td>
+                {{ product.price }}
+                </td>
+            </tr>
+            <tr>
+            <th>
+
+            </th>
+            <td>
+
+            </td>
+            </tr>
+
+        </tr>
+        </table>
+    {%  endif %}
+{% endfor %}
+
+{% endblock %}
