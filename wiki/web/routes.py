@@ -174,7 +174,7 @@ def sort_price_ascending():
     return make_response({"output": list_of_product})
 
 
-@bp.route('/sort_title_ascending')
+@bp.route('/sort_title_asc')
 @protect
 def sort_title_ascending():
     product_list_info()
@@ -191,7 +191,7 @@ def sort_title_ascending():
     return make_response({"output": list_of_product})
 
 
-@bp.route('/sort_title_descending')
+@bp.route('/sort_title_desc')
 @protect
 def sort_title_descending():
     product_list_info()

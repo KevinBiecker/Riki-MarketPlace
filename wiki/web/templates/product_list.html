@@ -85,38 +85,7 @@
                 tableP.innerHTML = "";
                 for (let x in data['output'])
                 {
-                    tableP.innerHTML +=
-                    `<tr id = "tableOfProducts">
-                    <tr>
-                        <th>TITLE:</th>
-                        <td>
-                           ${data['output'][x]["title"]}
-                        </td>
-                        <br>
-                    </tr>
-                        <tr>
-                        <th>DESCRIPTION:</th>
-                        <td>
-                            ${data['output'][x]["description"]}
-
-                        </td>
-                        </tr>
-                        <tr>
-                         <th>PRICE:</th>
-                        <td>
-                            ${data['output'][x]["price"]}
-                            </td>
-                        </tr>
-
-                        <tr>
-                        <th>
-
-                        </th>
-                        <td>
-                        </td>
-                        </tr>
-
-                    </tr></tr>`
+                    tableP.innerHTML += makeTableEntry(data['output'][x]["title"], data['output'][x]["description"], data['output'][x]["price"])
                 }
             });
         }
@@ -132,7 +101,7 @@
             window.location.reload()
             */
 
-            //this will send a request to the funciton associated with the url
+            //this will send a request to the function associated with the url
             let myRequest = new Request('/sort_price_ascending')
             //this sends the request and gets a response (data)
             fetch(myRequest).then(response => response.json()).then(function (data) {
@@ -143,36 +112,7 @@
                 //...and fill it with the elements contained in the array we got back (data)
                 for (let x in data['output'])
                 {
-                    tableP.innerHTML +=
-                    `<tr id = "tableOfProducts">
-                    <tr>
-                        <th>TITLE:</th>
-                        <td>
-                           ${data['output'][x]["title"]}
-                        </td>
-                        <br>
-                    </tr>
-                        <tr>
-                        <th>DESCRIPTION:</th>
-                        <td>
-                            ${data['output'][x]["description"]}
-
-                        </td>
-                        </tr>
-                        <tr>
-                         <th>PRICE:</th>
-                        <td>
-                            ${data['output'][x]["price"]}
-                            </td>
-                        </tr>
-
-                        <tr>
-                        <th>
-
-                        </th>
-                        <td>
-                        </td>
-                    </tr></tr>`
+                    tableP.innerHTML += makeTableEntry(data['output'][x]["title"], data['output'][x]["description"], data['output'][x]["price"])
                 }
             });
         }
@@ -187,8 +127,8 @@
             })
             window.location.reload()
             */
-            //this will send a request to the funciton associated with the url
-            let myRequest = new Request('/sort_title_ascending')
+            //this will send a request to the function associated with the url
+            let myRequest = new Request('/sort_title_asc')
             //this sends the request and gets a response (data)
             fetch(myRequest).then(response => response.json()).then(function (data) {
                 //we'll define tableP as the section called "table" above
@@ -198,36 +138,7 @@
                 //...and fill it with the elements contained in the array we got back (data)
                 for (let x in data['output'])
                 {
-                    tableP.innerHTML +=
-                    `<tr id = "tableOfProducts">
-                    <tr>
-                        <th>TITLE:</th>
-                        <td>
-                           ${data['output'][x]["title"]}
-                        </td>
-                        <br>
-                    </tr>
-                        <tr>
-                        <th>DESCRIPTION:</th>
-                        <td>
-                            ${data['output'][x]["description"]}
-
-                        </td>
-                        </tr>
-                        <tr>
-                         <th>PRICE:</th>
-                        <td>
-                            ${data['output'][x]["price"]}
-                            </td>
-                        </tr>
-
-                        <tr>
-                        <th>
-
-                        </th>
-                        <td>
-                        </td>
-                    </tr></tr>`
+                    tableP.innerHTML += makeTableEntry(data['output'][x]["title"], data['output'][x]["description"], data['output'][x]["price"])
                 }
             });
         }
@@ -242,32 +153,43 @@
             })
             window.location.reload()
             */
-            let myRequest = new Request('/sort_title_descending')
+            let myRequest = new Request('/sort_title_desc')
             fetch(myRequest).then(response => response.json()).then(function (data) {
                 let tableP = document.getElementById("table");
                 tableP.innerHTML = "";
                 for (let x in data['output'])
                 {
-                    tableP.innerHTML +=
-                    `<tr id = "tableOfProducts">
+                    tableP.innerHTML += makeTableEntry(data['output'][x]["title"], data['output'][x]["description"], data['output'][x]["price"])
+                }
+            });
+        }
+
+        function buyItem(item)
+        {
+            //buy item
+        }
+
+        function makeTableEntry(title, description, price)
+        {
+            return `<tr id = "tableOfProducts">
                     <tr>
                         <th>TITLE:</th>
                         <td>
-                           ${data['output'][x]["title"]}
+                           ${title}
                         </td>
                         <br>
                     </tr>
                         <tr>
                         <th>DESCRIPTION:</th>
                         <td>
-                            ${data['output'][x]["description"]}
+                            ${description}
 
                         </td>
                         </tr>
                         <tr>
                          <th>PRICE:</th>
                         <td>
-                            ${data['output'][x]["price"]}
+                            ${price}
                             </td>
                         </tr>
 
@@ -278,13 +200,6 @@
                         <td>
                         </td>
                     </tr></tr>`
-                }
-            });
-        }
-
-        function buyItem(item)
-        {
-            //buy item
         }
     </script>
 
