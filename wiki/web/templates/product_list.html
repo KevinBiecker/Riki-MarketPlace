@@ -132,11 +132,15 @@
             window.location.reload()
             */
 
-
+            //this will send a request to the funciton associated with the url
             let myRequest = new Request('/sort_price_ascending')
+            //this sends the request and gets a response (data)
             fetch(myRequest).then(response => response.json()).then(function (data) {
+                //we'll define tableP as the section called "table" above
                 let tableP = document.getElementById("table");
+                //we'll erase it...
                 tableP.innerHTML = "";
+                //...and fill it with the elements contained in the array we got back (data)
                 for (let x in data['output'])
                 {
                     tableP.innerHTML +=
@@ -183,10 +187,15 @@
             })
             window.location.reload()
             */
+            //this will send a request to the funciton associated with the url
             let myRequest = new Request('/sort_title_ascending')
+            //this sends the request and gets a response (data)
             fetch(myRequest).then(response => response.json()).then(function (data) {
+                //we'll define tableP as the section called "table" above
                 let tableP = document.getElementById("table");
+                //we'll erase it...
                 tableP.innerHTML = "";
+                //...and fill it with the elements contained in the array we got back (data)
                 for (let x in data['output'])
                 {
                     tableP.innerHTML +=
