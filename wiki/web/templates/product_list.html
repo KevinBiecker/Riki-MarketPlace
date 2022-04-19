@@ -20,45 +20,56 @@
     <button type="button" value="Sort by Price (Ascending)" onclick="sort_by_price_ascending()">Sort by Price (Ascending)</button>
     <button type="button" value="Sort by Title (A to Z)" onclick="sort_by_title_ascending()">Sort by Title (A to Z)</button>
     <button type="button" value="Sort by TItle (Z to A)" onclick="sort_by_title_descending()">Sort by Title (Z to A)</button>
-{% for list in list_of_product %}
+
     <table class = "table table-hover">
-    <tr>
+        <tbody id = "table">
+    <tr id = "tableOfProducts">
+    {% for list in list_of_product %}
     <tr>
         <th>TITLE:</th>
         <td>
-           {{ list.title }}
+           {{ list["title"] }}
         </td>
     </tr>
         <tr>
         <th>DESCRIPTION:</th>
         <td>
 
-            {{ list.description}}
+            {{ list["description"] }}
 
         </td>
         </tr>
         <tr>
          <th>PRICE:</th>
         <td>
-            {{ list.price }}
+            {{ list["price"] }}
             </td>
         </tr>
+
         <tr>
         <th>
 
         </th>
         <td>
-
+            <!-- Here goes button to change bought -->
+            <!--  -->
+            {% if list["bought"] == 0 %}
+                <button type="button" value="Purchase" onclick="buyItem(list)">Buy Item</button>
+            {% else %}
+                <p> This item has been bought </p>
+            {% endif %}
         </td>
         </tr>
 
-    </tr>
-    </table>
     {% endfor %}
+    </tr>
+    </tbody>
+    </table>
 
     <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.5/jquery.min.js"></script>
     <script>
         function sort_by_price_descending() {
+           /*
             $.ajax({
                 url:"/sort_price_descending",
                 type:"POST",
@@ -66,9 +77,52 @@
                 data: {},
             })
             window.location.reload()
+           */
+
+            let myRequest = new Request('/sort_price_descending')
+            fetch(myRequest).then(response => response.json()).then(function (data) {
+                let tableP = document.getElementById("table");
+                tableP.innerHTML = "";
+                for (let x in data['output'])
+                {
+                    tableP.innerHTML +=
+                    `<tr id = "tableOfProducts">
+                    <tr>
+                        <th>TITLE:</th>
+                        <td>
+                           ${data['output'][x]["title"]}
+                        </td>
+                        <br>
+                    </tr>
+                        <tr>
+                        <th>DESCRIPTION:</th>
+                        <td>
+                            ${data['output'][x]["description"]}
+
+                        </td>
+                        </tr>
+                        <tr>
+                         <th>PRICE:</th>
+                        <td>
+                            ${data['output'][x]["price"]}
+                            </td>
+                        </tr>
+
+                        <tr>
+                        <th>
+
+                        </th>
+                        <td>
+                        </td>
+                        </tr>
+
+                    </tr></tr>`
+                }
+            });
         }
 
         function sort_by_price_ascending() {
+            /*
             $.ajax({
                 url:"/sort_price_ascending",
                 type:"POST",
@@ -76,6 +130,47 @@
                 data: {},
             })
             window.location.reload()
+            tableOfProducts
+            */
+
+            let myRequest = new Request('/sort_price_ascending')
+            fetch(myRequest).then(response => response.json()).then(function (data) {
+                let tableP = document.getElementById("table");
+                tableP.innerHTML = "";
+                for (let x in data['output'])
+                {
+                    tableP.innerHTML +=
+                    `<tr id = "tableOfProducts">
+                    <tr>
+                        <th>TITLE:</th>
+                        <td>
+                           ${data['output'][x]["title"]}
+                        </td>
+                        <br>
+                    </tr>
+                        <tr>
+                        <th>DESCRIPTION:</th>
+                        <td>
+                            ${data['output'][x]["description"]}
+
+                        </td>
+                        </tr>
+                        <tr>
+                         <th>PRICE:</th>
+                        <td>
+                            ${data['output'][x]["price"]}
+                            </td>
+                        </tr>
+
+                        <tr>
+                        <th>
+
+                        </th>
+                        <td>
+                        </td>
+                    </tr></tr>`
+                }
+            });
         }
 
         function sort_by_title_ascending() {
@@ -96,6 +191,11 @@
                 data: {},
             })
             window.location.reload()
+        }
+
+        function buyItem(item)
+        {
+            //buy item
         }
     </script>
 
