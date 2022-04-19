@@ -174,7 +174,7 @@ def sort_price_ascending():
     return make_response({"output": list_of_product})
 
 
-@bp.route('/sort_title_ascending', methods=['POST'])
+@bp.route('/sort_title_ascending')
 @protect
 def sort_title_ascending():
     product_list_info()
@@ -184,10 +184,14 @@ def sort_title_ascending():
     pickle.dump(Product.productList, pickle_outfile)
     # pickle.dump(empty_list, pickle_outfile)
     pickle_outfile.close()
-    return render_template('product_list.html', list_of_product=Product.productList)
+    #return render_template('product_list.html', list_of_product=Product.productList)
+    list_of_product = []
+    for x in Product.productList:
+        list_of_product.append(x.getJson())
+    return make_response({"output": list_of_product})
 
 
-@bp.route('/sort_title_descending', methods=['POST'])
+@bp.route('/sort_title_descending')
 @protect
 def sort_title_descending():
     product_list_info()
@@ -197,7 +201,11 @@ def sort_title_descending():
     pickle.dump(Product.productList, pickle_outfile)
     # pickle.dump(empty_list, pickle_outfile)
     pickle_outfile.close()
-    return render_template('product_list.html', list_of_product=Product.productList)
+    #return render_template('product_list.html', list_of_product=Product.productList)
+    list_of_product = []
+    for x in Product.productList:
+        list_of_product.append(x.getJson())
+    return make_response({"output": list_of_product})
 
 
 @bp.route('/<path:url>/')
