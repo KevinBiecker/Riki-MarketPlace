@@ -26,7 +26,9 @@
             const description = document.getElementById("description").value;
             const price = document.getElementById("price").value;
 
-            const dict_values = {title, description, price} //Pass the javascript variables to a dictionary.
+            const bought = 0;
+
+            const dict_values = {title, description, price, bought} //Pass the javascript variables to a dictionary.
             const s = JSON.stringify(dict_values); // Stringify converts a JavaScript object or value to a JSON string
             console.log(s); // Prints the variables to console window, which are in the JSON format
             window.alert(s)

@@ -20,81 +20,103 @@
     <button type="button" value="Sort by Price (Ascending)" onclick="sort_by_price_ascending()">Sort by Price (Ascending)</button>
     <button type="button" value="Sort by Title (A to Z)" onclick="sort_by_title_ascending()">Sort by Title (A to Z)</button>
     <button type="button" value="Sort by TItle (Z to A)" onclick="sort_by_title_descending()">Sort by Title (Z to A)</button>
-    <p>Press Refresh button to see updated list after pressing sort button.</p>
-    <button type="reset" value="Reset" onclick="window.location.reload()">Refresh</button>
-
-{% for list in list_of_product %}
+    <div id = "table">
     <table class = "table table-hover">
-    <tr>
+        <tbody>
+        <tr id = "tableOfProducts">
+    {% for list in list_of_product %}
     <tr>
         <th>TITLE:</th>
         <td>
-           {{ list.title }}
+           {{ list["title"] }}
         </td>
     </tr>
         <tr>
         <th>DESCRIPTION:</th>
         <td>
 
-            {{ list.description}}
+            {{ list["description"] }}
 
         </td>
         </tr>
         <tr>
          <th>PRICE:</th>
         <td>
-            {{ list.price }}
+            {{ list["price"] }}
             </td>
         </tr>
+
         <tr>
         <th>
 
         </th>
         <td>
-
+            <!-- Here goes button to change bought -->
+            <!--  -->
+            {% if list["bought"] == 0 %}
+                <button type="button" value="Purchase" onclick="buyItem({{ list }})">Buy Item</button>
+            {% else %}
+                <p> This item has been bought </p>
+            {% endif %}
         </td>
         </tr>
 
-    </tr>
-    </table>
     {% endfor %}
+    </tr>
+    </tbody>
+    </table>
+    </div>
 
     <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.5/jquery.min.js"></script>
     <script>
+        //productListJs
+        var list_of_product = {{ list_of_product|tojson }}
+
         function sort_by_price_descending() {
-            $.ajax({
-                url:"/sort_price_descending",
-                type:"POST",
-                contentType: "application/json",
-                data: {},
-            })
+            //this will send a request to the function associated with the url
+            let myRequest = new Request('/sort_price_descending')
+            requestTableRefresh(myRequest)
         }
 
         function sort_by_price_ascending() {
-            $.ajax({
-                url:"/sort_price_ascending",
-                type:"POST",
-                contentType: "application/json",
-                data: {},
-            })
+            //this will send a request to the function associated with the url
+            let myRequest = new Request('/sort_price_ascending')
+            requestTableRefresh(myRequest)
         }
 
         function sort_by_title_ascending() {
-            $.ajax({
-                url:"/sort_title_ascending",
-                type:"POST",
-                contentType: "application/json",
-                data: {},
-            })
+            //this will send a request to the function associated with the url
+            let myRequest = new Request('/sort_title_asc')
+            requestTableRefresh(myRequest)
         }
 
         function sort_by_title_descending() {
+            //this will send a request to the function associated with the url
+            let myRequest = new Request('/sort_title_desc')
+            requestTableRefresh(myRequest)
+        }
+
+        function buyItem(product)
+        {
             $.ajax({
-                url:"/sort_title_descending",
+                url:"/buy_button_input",
                 type:"POST",
                 contentType: "application/json",
-                data: {},
-            })
+                data: JSON.stringify(product)});
+
+            let myRequest = new Request('/buy_button_output')
+            requestTableRefresh(myRequest)
+        }
+
+        function requestTableRefresh(myRequest)
+        {
+            //this sends the request and gets a response (data)
+            fetch(myRequest).then(response => response.json()).then(function (data) {
+                //current product list with the sorted one
+                list_of_product = data['output'];
+                //refresh the table
+                $('#table').load(location.href + " #table");
+            });
         }
     </script>
 
