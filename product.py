@@ -11,7 +11,6 @@ class Product:
         self.bought = int(bought)
         self.__class__.productList.append(self)
 
-
     def __repr__(self):
         return "title:% s description:% s price:% d" % (self.title, self.description, self.price)
 
@@ -25,10 +24,10 @@ class Product:
         self.bought = 1
 
     def getJson(self):
-
         data = {
             'title': self.title,
             'description': self.description,
-            'price': self.price
+            'price': self.price,
+            'bought': self.bought
         }
         return data

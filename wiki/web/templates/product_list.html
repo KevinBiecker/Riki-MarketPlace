@@ -69,38 +69,18 @@
     <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.5/jquery.min.js"></script>
     <script>
         function sort_by_price_descending() {
-           /*
-            $.ajax({
-                url:"/sort_price_descending",
-                type:"POST",
-                contentType: "application/json",
-                data: {},
-            })
-            window.location.reload()
-           */
-
             let myRequest = new Request('/sort_price_descending')
             fetch(myRequest).then(response => response.json()).then(function (data) {
                 let tableP = document.getElementById("table");
                 tableP.innerHTML = "";
                 for (let x in data['output'])
                 {
-                    tableP.innerHTML += makeTableEntry(data['output'][x]["title"], data['output'][x]["description"], data['output'][x]["price"])
+                    tableP.innerHTML += makeTableEntry(data['output'][x]["title"], data['output'][x]["description"], data['output'][x]["price"], data['output'][x]["bought"])
                 }
             });
         }
 
         function sort_by_price_ascending() {
-            /*
-            $.ajax({
-                url:"/sort_price_ascending",
-                type:"POST",
-                contentType: "application/json",
-                data: {},
-            })
-            window.location.reload()
-            */
-
             //this will send a request to the function associated with the url
             let myRequest = new Request('/sort_price_ascending')
             //this sends the request and gets a response (data)
@@ -112,21 +92,12 @@
                 //...and fill it with the elements contained in the array we got back (data)
                 for (let x in data['output'])
                 {
-                    tableP.innerHTML += makeTableEntry(data['output'][x]["title"], data['output'][x]["description"], data['output'][x]["price"])
+                    tableP.innerHTML += makeTableEntry(data['output'][x]["title"], data['output'][x]["description"], data['output'][x]["price"], data['output'][x]["bought"])
                 }
             });
         }
 
         function sort_by_title_ascending() {
-            /*
-            $.ajax({
-                url:"/sort_title_ascending",
-                type:"POST",
-                contentType: "application/json",
-                data: {},
-            })
-            window.location.reload()
-            */
             //this will send a request to the function associated with the url
             let myRequest = new Request('/sort_title_asc')
             //this sends the request and gets a response (data)
@@ -138,28 +109,19 @@
                 //...and fill it with the elements contained in the array we got back (data)
                 for (let x in data['output'])
                 {
-                    tableP.innerHTML += makeTableEntry(data['output'][x]["title"], data['output'][x]["description"], data['output'][x]["price"])
+                    tableP.innerHTML += makeTableEntry(data['output'][x]["title"], data['output'][x]["description"], data['output'][x]["price"], data['output'][x]["bought"])
                 }
             });
         }
 
         function sort_by_title_descending() {
-            /*
-            $.ajax({
-                url:"/sort_title_descending",
-                type:"POST",
-                contentType: "application/json",
-                data: {},
-            })
-            window.location.reload()
-            */
             let myRequest = new Request('/sort_title_desc')
             fetch(myRequest).then(response => response.json()).then(function (data) {
                 let tableP = document.getElementById("table");
                 tableP.innerHTML = "";
                 for (let x in data['output'])
                 {
-                    tableP.innerHTML += makeTableEntry(data['output'][x]["title"], data['output'][x]["description"], data['output'][x]["price"])
+                    tableP.innerHTML += makeTableEntry(data['output'][x]["title"], data['output'][x]["description"], data['output'][x]["price"], data['output'][x]["bought"])
                 }
             });
         }
@@ -169,15 +131,14 @@
             //buy item
         }
 
-        function makeTableEntry(title, description, price)
+        function makeTableEntry(title, description, price, bought)
         {
-            return `<tr id = "tableOfProducts">
+            let tableProduct = `<tr id = "tableOfProducts">
                     <tr>
                         <th>TITLE:</th>
                         <td>
                            ${title}
                         </td>
-                        <br>
                     </tr>
                         <tr>
                         <th>DESCRIPTION:</th>
@@ -192,14 +153,31 @@
                             ${price}
                             </td>
                         </tr>
+                    <tr>
+                    <th>
 
-                        <tr>
-                        <th>
+                    </th>`
 
-                        </th>
-                        <td>
-                        </td>
-                    </tr></tr>`
+            if (bought === 0)
+            {
+                tableProduct += `<td>
+                     <button type="button" value="Purchase" onclick="buyItem(list)">Buy Item</button>
+                    </td>
+                    </tr>
+
+                    </tr>`;
+            }
+            else
+            {
+                tableProduct += `<td>
+                    <p> This item has been bought </p>
+                    </td>
+                    </tr>
+
+                    </tr>`;
+            }
+
+            return tableProduct
         }
     </script>
 
