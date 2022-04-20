@@ -207,6 +207,39 @@ def sort_title_descending():
         list_of_product.append(x.getJson())
     return make_response({"output": list_of_product})
 
+@bp.route('/buy_button_input', methods=['POST'])
+def buy_button_input():
+    product_list_info()
+    print("before output")
+    product = request.json
+
+    for x in Product.productList:
+        if x.get_title() == product["title"] and x.get_description() == product["description"] and x.get_bought() == 0:
+            x.buy_item()
+            print("something should change")
+
+        print(x.get_bought())
+
+    print("between for")
+
+    for x in Product.productList:
+        print(x.get_bought())
+
+    print(Product.productList)
+    pickle_outfile = open("productData.pkl", "wb")
+    pickle.dump(Product.productList, pickle_outfile)
+    # pickle.dump(empty_list, pickle_outfile)
+    pickle_outfile.close()
+
+    return product["title"]
+
+@bp.route('/buy_button_output')
+@protect
+def buy_button_output():
+    list_of_product = []
+    for x in Product.productList:
+        list_of_product.append(x.getJson())
+    return make_response({"output": list_of_product})
 
 @bp.route('/<path:url>/')
 @protect

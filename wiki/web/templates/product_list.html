@@ -20,10 +20,10 @@
     <button type="button" value="Sort by Price (Ascending)" onclick="sort_by_price_ascending()">Sort by Price (Ascending)</button>
     <button type="button" value="Sort by Title (A to Z)" onclick="sort_by_title_ascending()">Sort by Title (A to Z)</button>
     <button type="button" value="Sort by TItle (Z to A)" onclick="sort_by_title_descending()">Sort by Title (Z to A)</button>
-
+    <div id = "table">
     <table class = "table table-hover">
-        <tbody id = "table">
-    <tr id = "tableOfProducts">
+        <tbody>
+        <tr id = "tableOfProducts">
     {% for list in list_of_product %}
     <tr>
         <th>TITLE:</th>
@@ -54,7 +54,7 @@
             <!-- Here goes button to change bought -->
             <!--  -->
             {% if list["bought"] == 0 %}
-                <button type="button" value="Purchase" onclick="buyItem(list)">Buy Item</button>
+                <button type="button" value="Purchase" onclick="buyItem({{ list }})">Buy Item</button>
             {% else %}
                 <p> This item has been bought </p>
             {% endif %}
@@ -65,119 +65,58 @@
     </tr>
     </tbody>
     </table>
+    </div>
 
     <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.5/jquery.min.js"></script>
     <script>
+        //productListJs
+        var list_of_product = {{ list_of_product|tojson }}
+
         function sort_by_price_descending() {
+            //this will send a request to the function associated with the url
             let myRequest = new Request('/sort_price_descending')
-            fetch(myRequest).then(response => response.json()).then(function (data) {
-                let tableP = document.getElementById("table");
-                tableP.innerHTML = "";
-                for (let x in data['output'])
-                {
-                    tableP.innerHTML += makeTableEntry(data['output'][x]["title"], data['output'][x]["description"], data['output'][x]["price"], data['output'][x]["bought"])
-                }
-            });
+            requestTableRefresh(myRequest)
         }
 
         function sort_by_price_ascending() {
             //this will send a request to the function associated with the url
             let myRequest = new Request('/sort_price_ascending')
-            //this sends the request and gets a response (data)
-            fetch(myRequest).then(response => response.json()).then(function (data) {
-                //we'll define tableP as the section called "table" above
-                let tableP = document.getElementById("table");
-                //we'll erase it...
-                tableP.innerHTML = "";
-                //...and fill it with the elements contained in the array we got back (data)
-                for (let x in data['output'])
-                {
-                    tableP.innerHTML += makeTableEntry(data['output'][x]["title"], data['output'][x]["description"], data['output'][x]["price"], data['output'][x]["bought"])
-                }
-            });
+            requestTableRefresh(myRequest)
         }
 
         function sort_by_title_ascending() {
             //this will send a request to the function associated with the url
             let myRequest = new Request('/sort_title_asc')
-            //this sends the request and gets a response (data)
-            fetch(myRequest).then(response => response.json()).then(function (data) {
-                //we'll define tableP as the section called "table" above
-                let tableP = document.getElementById("table");
-                //we'll erase it...
-                tableP.innerHTML = "";
-                //...and fill it with the elements contained in the array we got back (data)
-                for (let x in data['output'])
-                {
-                    tableP.innerHTML += makeTableEntry(data['output'][x]["title"], data['output'][x]["description"], data['output'][x]["price"], data['output'][x]["bought"])
-                }
-            });
+            requestTableRefresh(myRequest)
         }
 
         function sort_by_title_descending() {
+            //this will send a request to the function associated with the url
             let myRequest = new Request('/sort_title_desc')
+            requestTableRefresh(myRequest)
+        }
+
+        function buyItem(product)
+        {
+            $.ajax({
+                url:"/buy_button_input",
+                type:"POST",
+                contentType: "application/json",
+                data: JSON.stringify(product)});
+
+            let myRequest = new Request('/buy_button_output')
+            requestTableRefresh(myRequest)
+        }
+
+        function requestTableRefresh(myRequest)
+        {
+            //this sends the request and gets a response (data)
             fetch(myRequest).then(response => response.json()).then(function (data) {
-                let tableP = document.getElementById("table");
-                tableP.innerHTML = "";
-                for (let x in data['output'])
-                {
-                    tableP.innerHTML += makeTableEntry(data['output'][x]["title"], data['output'][x]["description"], data['output'][x]["price"], data['output'][x]["bought"])
-                }
+                //current product list with the sorted one
+                list_of_product = data['output'];
+                //refresh the table
+                $('#table').load(location.href + " #table");
             });
-        }
-
-        function buyItem(item)
-        {
-            //buy item
-        }
-
-        function makeTableEntry(title, description, price, bought)
-        {
-            let tableProduct = `<tr id = "tableOfProducts">
-                    <tr>
-                        <th>TITLE:</th>
-                        <td>
-                           ${title}
-                        </td>
-                    </tr>
-                        <tr>
-                        <th>DESCRIPTION:</th>
-                        <td>
-                            ${description}
-
-                        </td>
-                        </tr>
-                        <tr>
-                         <th>PRICE:</th>
-                        <td>
-                            ${price}
-                            </td>
-                        </tr>
-                    <tr>
-                    <th>
-
-                    </th>`
-
-            if (bought === 0)
-            {
-                tableProduct += `<td>
-                     <button type="button" value="Purchase" onclick="buyItem(list)">Buy Item</button>
-                    </td>
-                    </tr>
-
-                    </tr>`;
-            }
-            else
-            {
-                tableProduct += `<td>
-                    <p> This item has been bought </p>
-                    </td>
-                    </tr>
-
-                    </tr>`;
-            }
-
-            return tableProduct
         }
     </script>
 
