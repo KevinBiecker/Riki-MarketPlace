@@ -210,17 +210,15 @@ def sort_title_descending():
 @bp.route('/buy_button_input', methods=['POST'])
 def buy_button_input():
     product_list_info()
-    print("before output")
     product = request.json
 
     for x in Product.productList:
         if x.get_title() == product["title"] and x.get_description() == product["description"] and x.get_bought() == 0:
             x.buy_item()
-            print("something should change")
+            productSel = x
+            break
 
         print(x.get_bought())
-
-    print("between for")
 
     for x in Product.productList:
         print(x.get_bought())
@@ -230,10 +228,10 @@ def buy_button_input():
     pickle.dump(Product.productList, pickle_outfile)
     # pickle.dump(empty_list, pickle_outfile)
     pickle_outfile.close()
+    print("buy input ran")
+    return productSel.getJson()
 
-    return product["title"]
-
-@bp.route('/buy_button_output')
+@bp.route('/buy_button_output', methods=['GET'])
 @protect
 def buy_button_output():
     list_of_product = []
