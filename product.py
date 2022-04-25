@@ -1,14 +1,15 @@
+from flask import jsonify
 
 
 class Product:
     productList = []
 
-    def __init__(self, title, description, price):
+    def __init__(self, title, description, price, bought):
         self.title = title
         self.description = description
         self.price = int(price)
+        self.bought = int(bought)
         self.__class__.productList.append(self)
-
 
     def __repr__(self):
         return "title:% s description:% s price:% d" % (self.title, self.description, self.price)
@@ -19,6 +20,17 @@ class Product:
     def get_description(self):
         return self.description
 
+    def get_bought(self):
+        return self.bought
 
+    def buy_item(self):
+        self.bought = 1
 
-
+    def getJson(self):
+        data = {
+            'title': self.title,
+            'description': self.description,
+            'price': self.price,
+            'bought': self.bought
+        }
+        return data

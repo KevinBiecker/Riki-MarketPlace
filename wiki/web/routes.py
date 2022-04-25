@@ -3,7 +3,7 @@
     ~~~~~~
 """
 import flask
-from flask import Blueprint
+from flask import Blueprint, make_response
 from flask import flash
 from flask import redirect
 from flask import render_template
@@ -61,19 +61,25 @@ def product_info():
     tempTitle = ""
     tempDescription = ""
     tempPrice = ""
+    tempBought = ""
+
     items = ""
     for item in result:
-        items += result[item] + " "
+        items += str(result[item]) + " "
         if i == 1:
             tempTitle = result[item]
         elif i == 2:
             tempDescription = result[item]
-        else:
+        elif i == 3:
             tempPrice = result[item]
+
+        else:
+            tempBought = result[item]
+
         i += 1
 
     Product.productList.clear()
-    Product(tempTitle, tempDescription, tempPrice)
+    Product(tempTitle, tempDescription, tempPrice, tempBought)
 
     # The following code bellow is for data persistance
     pickle_infile = open("productData.pkl", "rb")
@@ -114,8 +120,12 @@ def product_list_info():
 @protect
 def list():
     product_list_info()
-    list_of_product = Product.productList
-    print(list_of_product)
+    #list_of_product = Product.productList
+    #print(list_of_product)
+
+    list_of_product = []
+    for x in Product.productList:
+        list_of_product.append(x.getJson())
     return render_template('product_list.html', list_of_product= list_of_product)
 
 
@@ -130,7 +140,7 @@ def search_products():
     return render_template('search_results.html', search_input=search_input, all_products=all_products)
 
 
-@bp.route('/sort_price_descending', methods=['POST'])
+@bp.route('/sort_price_descending')
 @protect
 def sort_price_descending():
     product_list_info()
@@ -140,10 +150,14 @@ def sort_price_descending():
     pickle.dump(Product.productList, pickle_outfile)
     # pickle.dump(empty_list, pickle_outfile)
     pickle_outfile.close()
-    return render_template('product_list.html', list_of_product=Product.productList)
+    #return render_template('product_list.html', list_of_product=Product.productList)
+    list_of_product = []
+    for x in Product.productList:
+        list_of_product.append(x.getJson())
+    return make_response({"output": list_of_product})
 
 
-@bp.route('/sort_price_ascending', methods=['POST'])
+@bp.route('/sort_price_ascending')
 @protect
 def sort_price_ascending():
     product_list_info()
@@ -153,10 +167,14 @@ def sort_price_ascending():
     pickle.dump(Product.productList, pickle_outfile)
     # pickle.dump(empty_list, pickle_outfile)
     pickle_outfile.close()
-    return render_template('product_list.html', list_of_product=Product.productList)
+    #return render_template('product_list.html', list_of_product=Product.productList)
+    list_of_product = []
+    for x in Product.productList:
+        list_of_product.append(x.getJson())
+    return make_response({"output": list_of_product})
 
 
-@bp.route('/sort_title_ascending', methods=['POST'])
+@bp.route('/sort_title_asc')
 @protect
 def sort_title_ascending():
     product_list_info()
@@ -166,10 +184,14 @@ def sort_title_ascending():
     pickle.dump(Product.productList, pickle_outfile)
     # pickle.dump(empty_list, pickle_outfile)
     pickle_outfile.close()
-    return render_template('product_list.html', list_of_product=Product.productList)
+    #return render_template('product_list.html', list_of_product=Product.productList)
+    list_of_product = []
+    for x in Product.productList:
+        list_of_product.append(x.getJson())
+    return make_response({"output": list_of_product})
 
 
-@bp.route('/sort_title_descending', methods=['POST'])
+@bp.route('/sort_title_desc')
 @protect
 def sort_title_descending():
     product_list_info()
@@ -179,8 +201,43 @@ def sort_title_descending():
     pickle.dump(Product.productList, pickle_outfile)
     # pickle.dump(empty_list, pickle_outfile)
     pickle_outfile.close()
-    return render_template('product_list.html', list_of_product=Product.productList)
+    #return render_template('product_list.html', list_of_product=Product.productList)
+    list_of_product = []
+    for x in Product.productList:
+        list_of_product.append(x.getJson())
+    return make_response({"output": list_of_product})
 
+@bp.route('/buy_button_input', methods=['POST'])
+def buy_button_input():
+    product_list_info()
+    product = request.json
+
+    for x in Product.productList:
+        if x.get_title() == product["title"] and x.get_description() == product["description"] and x.get_bought() == 0:
+            x.buy_item()
+            productSel = x
+            break
+
+        print(x.get_bought())
+
+    for x in Product.productList:
+        print(x.get_bought())
+
+    print(Product.productList)
+    pickle_outfile = open("productData.pkl", "wb")
+    pickle.dump(Product.productList, pickle_outfile)
+    # pickle.dump(empty_list, pickle_outfile)
+    pickle_outfile.close()
+    print("buy input ran")
+    return productSel.getJson()
+
+@bp.route('/buy_button_output', methods=['GET'])
+@protect
+def buy_button_output():
+    list_of_product = []
+    for x in Product.productList:
+        list_of_product.append(x.getJson())
+    return make_response({"output": list_of_product})
 
 @bp.route('/<path:url>/')
 @protect
