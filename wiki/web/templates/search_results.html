@@ -79,12 +79,10 @@
                 contentType: "application/json",
                 data: JSON.stringify(product)});
 
-            alert(searchQuery)
-
             //create a GET request to update the table
             let myRequest = new Request('/buy_button_output')
             requestTableRefresh(myRequest)
-            alert(searchQuery)
+            alert("Product Bought")
         }
 
         //creates a fetch request that updates table
