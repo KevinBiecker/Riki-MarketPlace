@@ -63,5 +63,41 @@
         {%  endif %}
     {% endfor %}
 
+    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.5/jquery.min.js"></script>
+    <script>
+        //productListJs
+        var list_of_product = {{ all_products|tojson }}
+        var searchQuery = {{ search_input|tojson }}
+
+        //function that sets the clicked item as bought
+        function buyItem(product)
+        {
+            //POST request to set the product clicked as bought
+            $.ajax({
+                url:"/buy_button_input",
+                type:"POST",
+                contentType: "application/json",
+                data: JSON.stringify(product)});
+
+            alert(searchQuery)
+
+            //create a GET request to update the table
+            let myRequest = new Request('/buy_button_output')
+            requestTableRefresh(myRequest)
+            alert(searchQuery)
+        }
+
+        //creates a fetch request that updates table
+        function requestTableRefresh(myRequest)
+        {
+            //this sends the request and gets a response (data)
+            fetch(myRequest).then(response => response.json()).then(function (data) {
+                //current product list with the sorted one
+                list_of_product = data['output'];
+                //refresh the table
+                $('#table').load(location.href + " #table");
+            });
+        }
+    </script>
 
 {% endblock %}
