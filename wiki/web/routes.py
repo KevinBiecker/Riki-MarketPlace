@@ -64,6 +64,8 @@ def product_info():
     tempBought = ""
 
     items = ""
+    # Assigns values from the dictionary stored in the variable result
+    # to their corresponding variable.
     for item in result:
         items += str(result[item]) + " "
         if i == 1:
@@ -119,10 +121,9 @@ def product_list_info():
 @bp.route('/list/')
 @protect
 def list():
+    # makes sure product list is populated correctly
     product_list_info()
-    #list_of_product = Product.productList
-    #print(list_of_product)
-
+    # create a list of all the products to send to the template
     list_of_product = []
     for x in Product.productList:
         list_of_product.append(x.getJson())
