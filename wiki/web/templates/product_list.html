@@ -20,6 +20,7 @@
     <button type="button" value="Sort by Price (Ascending)" onclick="sort_by_price_ascending()">Sort by Price (Ascending)</button>
     <button type="button" value="Sort by Title (A to Z)" onclick="sort_by_title_ascending()">Sort by Title (A to Z)</button>
     <button type="button" value="Sort by TItle (Z to A)" onclick="sort_by_title_descending()">Sort by Title (Z to A)</button>
+    {# Display each product information in a table #}
     <div id = "table">
     <table class = "table table-hover">
         <tbody>
@@ -96,18 +97,22 @@
             requestTableRefresh(myRequest)
         }
 
+        //function that sets the clicked item as bought
         function buyItem(product)
         {
+            //POST request to set the product clicked as bought
             $.ajax({
                 url:"/buy_button_input",
                 type:"POST",
                 contentType: "application/json",
                 data: JSON.stringify(product)});
 
+            //create a GET request to update the table
             let myRequest = new Request('/buy_button_output')
             requestTableRefresh(myRequest)
         }
 
+        //creates a fetch request that updates table
         function requestTableRefresh(myRequest)
         {
             //this sends the request and gets a response (data)

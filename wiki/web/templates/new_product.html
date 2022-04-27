@@ -9,7 +9,7 @@
     <title>New Product</title>
     </head>
 <body>
-
+    {# Gets users input for product#}
     <label for="title">Enter Title:</label> <input type="text" id="title" name="titles">
     <label for="description">Enter Description:</label>
         <textarea id="description" name="description" rows="4"></textarea>
@@ -18,8 +18,11 @@
     <button type="submit" onclick='myfunction();'>Post</button>
 
 
+
     <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.5/jquery.min.js"></script>
     <script>
+        /* Products input data is formatted with json so that it can be used in the
+           routes.py's function called product_info. */
         function myfunction() {
 
             const title = document.getElementById("title").value;
@@ -31,7 +34,7 @@
             const dict_values = {title, description, price, bought} //Pass the javascript variables to a dictionary.
             const s = JSON.stringify(dict_values); // Stringify converts a JavaScript object or value to a JSON string
             console.log(s); // Prints the variables to console window, which are in the JSON format
-            window.alert(s)
+            window.alert(s) // Displays alert when post button is hit
             $.ajax({
                 url:"/product_info",
                 type:"POST",

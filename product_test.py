@@ -1,5 +1,6 @@
 import unittest
 from product import Product
+from wiki.web.routes import search_products
 
 
 class MyTestCase(unittest.TestCase):
