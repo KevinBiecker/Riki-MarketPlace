@@ -147,68 +147,88 @@ def search_products():
 @bp.route('/sort_price_descending')
 @protect
 def sort_price_descending():
+    # updates product list with current list in pickle file
     product_list_info()
+    # sorts product list by price property from greatest to least
     Product.productList.sort(key=lambda x: x.price, reverse=True)
     print(Product.productList)
+    # updates pickle file with sorted list for data persistence
     pickle_outfile = open("productData.pkl", "wb")
     pickle.dump(Product.productList, pickle_outfile)
     # pickle.dump(empty_list, pickle_outfile)
     pickle_outfile.close()
-    #return render_template('product_list.html', list_of_product=Product.productList)
+    # return render_template('product_list.html', list_of_product=Product.productList)
+    # creates copy of product list variable to send as response so changes made in display are only for each user
     list_of_product = []
     for x in Product.productList:
         list_of_product.append(x.getJson())
+    # returns list_of_product as response to product_list.html to update display on list page
     return make_response({"output": list_of_product})
 
 
 @bp.route('/sort_price_ascending')
 @protect
 def sort_price_ascending():
+    # updates product list with current list in pickle file
     product_list_info()
+    # sorts product list by price property from least to greatest
     Product.productList.sort(key=lambda x: x.price)
     print(Product.productList)
+    # updates pickle file with sorted list for data persistence
     pickle_outfile = open("productData.pkl", "wb")
     pickle.dump(Product.productList, pickle_outfile)
     # pickle.dump(empty_list, pickle_outfile)
     pickle_outfile.close()
-    #return render_template('product_list.html', list_of_product=Product.productList)
+    # return render_template('product_list.html', list_of_product=Product.productList)
+    # creates copy of product list variable to send as response so changes made in display are only for each user
     list_of_product = []
     for x in Product.productList:
         list_of_product.append(x.getJson())
+    # returns list_of_product as response to product_list.html to update display on list page
     return make_response({"output": list_of_product})
 
 
 @bp.route('/sort_title_asc')
 @protect
 def sort_title_ascending():
+    # updates product list with current list in pickle file
     product_list_info()
+    # sorts product list by title property from A to Z
     Product.productList.sort(key=lambda x: x.title)
     print(Product.productList)
+    # updates pickle file with sorted list for data persistence
     pickle_outfile = open("productData.pkl", "wb")
     pickle.dump(Product.productList, pickle_outfile)
     # pickle.dump(empty_list, pickle_outfile)
     pickle_outfile.close()
-    #return render_template('product_list.html', list_of_product=Product.productList)
+    # return render_template('product_list.html', list_of_product=Product.productList)
+    # creates copy of product list variable to send as response so changes made in display are only for each user
     list_of_product = []
     for x in Product.productList:
         list_of_product.append(x.getJson())
+    # returns list_of_product as response to product_list.html to update display on list page
     return make_response({"output": list_of_product})
 
 
 @bp.route('/sort_title_desc')
 @protect
 def sort_title_descending():
+    # updates product list with current list in pickle file
     product_list_info()
+    # sorts product list by title property from Z to A
     Product.productList.sort(key=lambda x: x.title, reverse=True)
     print(Product.productList)
+    # updates pickle file with sorted list for data persistence
     pickle_outfile = open("productData.pkl", "wb")
     pickle.dump(Product.productList, pickle_outfile)
     # pickle.dump(empty_list, pickle_outfile)
     pickle_outfile.close()
-    #return render_template('product_list.html', list_of_product=Product.productList)
+    # return render_template('product_list.html', list_of_product=Product.productList)
+    # creates copy of product list variable to send as response so changes made in display are only for each user
     list_of_product = []
     for x in Product.productList:
         list_of_product.append(x.getJson())
+    # returns list_of_product as response to product_list.html to update display on list page
     return make_response({"output": list_of_product})
 
 @bp.route('/buy_button_input', methods=['POST'])
