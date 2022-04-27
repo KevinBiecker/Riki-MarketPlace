@@ -6,7 +6,8 @@
 
     <head>
 
-    <title>Products</title></head>
+    <title>Products</title>
+    </head>
 
     <!-- Search for products based on whether they contain the user input><-->
     <form method="POST">
@@ -16,42 +17,51 @@
 
 
 <hr>
-{% for product in all_products %}
-    {% if search_input in product.title.upper() or search_input in product.description.upper() %}
-        <table class = "table table-hover">
-        <tr>
-        <tr>
-            <th>TITLE:</th>
-            <td>
-               {{ product.title }}
-            </td>
-        </tr>
+    <div id="table">
+    {# determine whether each product contains the search input and display relevant products #}
+    {% for product in all_products %}
+        {% if search_input in product.title.upper() or search_input in product.description.upper() %}
+            <table class = "table table-hover">
             <tr>
-            <th>DESCRIPTION:</th>
-            <td>
-
-                {{ product.description}}
-
-            </td>
-            </tr>
             <tr>
-             <th>PRICE:</th>
-            <td>
-                {{ product.price }}
+                <th>TITLE:</th>
+                <td>
+                   {{ product["title"] }}
                 </td>
             </tr>
-            <tr>
-            <th>
+                <tr>
+                <th>DESCRIPTION:</th>
+                <td>
 
-            </th>
-            <td>
+                    {{ product["description"]}}
 
-            </td>
+                </td>
+                </tr>
+                <tr>
+                 <th>PRICE:</th>
+                <td>
+                    {{ product["price"] }}
+                    </td>
+                </tr>
+                <tr>
+                <th>
+
+                </th>
+                <td>
+            <!-- button to change bought status -->
+                {% if product["bought"] == 0 %}
+                    <button type="button" value="Purchase" onclick="buyItem({{ product }})">Buy Item</button>
+                {% else %}
+                    <p> This item has been bought </p>
+                {% endif %}
+                </td>
+                </tr>
+
             </tr>
+            </table>
+            </div>
+        {%  endif %}
+    {% endfor %}
 
-        </tr>
-        </table>
-    {%  endif %}
-{% endfor %}
 
 {% endblock %}

@@ -132,11 +132,14 @@ def list():
 
 @bp.route('/list/', methods=['GET', 'POST'])
 def search_products():
-
+    # get user input from product_list.html
     search_input = request.form['search_input']
     search_input = search_input.upper()
+    # get all products (to be compared with search_input)
     product_list_info()
-    all_products = Product.productList
+    all_products = []
+    for x in Product.productList:
+        all_products.append(x.getJson())
 
     return render_template('search_results.html', search_input=search_input, all_products=all_products)
 
