@@ -121,10 +121,9 @@ def product_list_info():
 @bp.route('/list/')
 @protect
 def list():
+    # makes sure product list is populated correctly
     product_list_info()
-    #list_of_product = Product.productList
-    #print(list_of_product)
-
+    # create a list of all the products to send to the template
     list_of_product = []
     for x in Product.productList:
         list_of_product.append(x.getJson())
