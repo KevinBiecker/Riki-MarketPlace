@@ -64,6 +64,8 @@ def product_info():
     tempBought = ""
 
     items = ""
+    # Assigns values from the dictionary stored in the variable result
+    # to their corresponding variable.
     for item in result:
         items += str(result[item]) + " "
         if i == 1:
