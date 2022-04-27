@@ -25,6 +25,9 @@ class Product:
     def get_description(self):
         return self.description
 
+    def get_price(self):
+        return self.price
+
     def get_bought(self):
         return self.bought
 

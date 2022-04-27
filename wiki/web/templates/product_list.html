@@ -97,18 +97,22 @@
             requestTableRefresh(myRequest)
         }
 
+        //function that sets the clicked item as bought
         function buyItem(product)
         {
+            //POST request to set the product clicked as bought
             $.ajax({
                 url:"/buy_button_input",
                 type:"POST",
                 contentType: "application/json",
                 data: JSON.stringify(product)});
 
+            //create a GET request to update the table
             let myRequest = new Request('/buy_button_output')
             requestTableRefresh(myRequest)
         }
 
+        //creates a fetch request that updates table
         function requestTableRefresh(myRequest)
         {
             //this sends the request and gets a response (data)

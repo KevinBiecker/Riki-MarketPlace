@@ -213,34 +213,37 @@ def sort_title_descending():
 
 @bp.route('/buy_button_input', methods=['POST'])
 def buy_button_input():
+    #get most recent product list and the bought item
     product_list_info()
     product = request.json
 
+    #find product being bought and sets it as bought
     for x in Product.productList:
-        if x.get_title() == product["title"] and x.get_description() == product["description"] and x.get_bought() == 0:
-            x.buy_item()
-            productSel = x
-            break
+        if x.get_title() == product["title"] and x.get_description() == product["description"]:
+            if x.get_price() == product["price"] and x.get_bought() == 0:
+                x.buy_item()
+                break
 
-        print(x.get_bought())
-
-    for x in Product.productList:
-        print(x.get_bought())
-
+    #saving the new productList into memory
     print(Product.productList)
     pickle_outfile = open("productData.pkl", "wb")
     pickle.dump(Product.productList, pickle_outfile)
-    # pickle.dump(empty_list, pickle_outfile)
     pickle_outfile.close()
-    print("buy input ran")
-    return productSel.getJson()
+
+    return product["title"]
 
 @bp.route('/buy_button_output', methods=['GET'])
 @protect
 def buy_button_output():
+    #get most recent list
+    product_list_info()
+
+    #convert all products in productList into dictionaries for javascript
     list_of_product = []
     for x in Product.productList:
         list_of_product.append(x.getJson())
+
+    #return list of product dictionaries
     return make_response({"output": list_of_product})
 
 @bp.route('/<path:url>/')
