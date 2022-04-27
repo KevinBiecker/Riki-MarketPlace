@@ -34,7 +34,7 @@
             const dict_values = {title, description, price, bought} //Pass the javascript variables to a dictionary.
             const s = JSON.stringify(dict_values); // Stringify converts a JavaScript object or value to a JSON string
             console.log(s); // Prints the variables to console window, which are in the JSON format
-            window.alert(s) // Displays alert when post button is hit
+            window.alert("Submitted") // Displays alert when post button is hit
             $.ajax({
                 url:"/product_info",
                 type:"POST",
