@@ -34,6 +34,7 @@ class Product:
     def buy_item(self):
         self.bought = 1
 
+    #returns a dictionary that represents this Product object
     def getJson(self):
         data = {
             'title': self.title,
