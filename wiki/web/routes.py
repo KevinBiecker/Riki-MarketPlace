@@ -28,7 +28,7 @@ import json
 import pickle
 
 bp = Blueprint('wiki', __name__)
-canRunBuy = True
+canRunBuy = 0
 
 @bp.route('/')
 @protect
@@ -235,7 +235,7 @@ def sort_title_descending():
 def buy_button_input():
     #we can't run buy output while we're doing input
     global canRunBuy
-    canRunBuy = False
+    canRunBuy += 1
     #get most recent product list and the bought item
     product_list_info()
     product = request.json
@@ -254,7 +254,7 @@ def buy_button_input():
     pickle_outfile.close()
 
     #now we can let the program run output
-    canRunBuy = True
+    canRunBuy -= 1
     return product["title"]
 
 @bp.route('/buy_button_output', methods=['GET'])
@@ -262,7 +262,7 @@ def buy_button_input():
 def buy_button_output():
     #while the program is doing buy_input, we wait
     global canRunBuy
-    while not canRunBuy:
+    while canRunBuy != 0:
         pass
     #get most recent list
     product_list_info()
